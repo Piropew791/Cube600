@@ -20,20 +20,25 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          
-      - name: Install deps and init
+
+      - name: Clean and Setup
         run: |
-          npm init -y || true
-          npm install @capacitor/core @capacitor/cli @capacitor/android || true
-          npx cap add android || true
-          npx cap sync || true
-          
+          rm -rf android
+          rm -rf node_modules
+          echo '{"name":"cube600","appId":"com.cube600.app","webDir":"www","bundledWebRuntime":false}' > capacitor.config.json
+          mkdir -p www
+          cp index.html www/ 2>/dev/null || echo "<h1>Cube600</h1>" > www/index.html
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npx cap add android
+          npx cap sync
+
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
-          
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
