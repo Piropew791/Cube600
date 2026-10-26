@@ -1,0 +1,6 @@
+{
+  "appId": "com.cube600.game",
+  "appName": "Cube600",
+  "webDir": ".",
+  "bundledWebRuntime": false
+}
